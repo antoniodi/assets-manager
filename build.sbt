@@ -3,7 +3,7 @@ import scalariform.formatter.preferences.{AlignSingleLineCaseStatements, Danglin
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
   .settings(
-    name := """play-scala-slick-akka-http-base""",
+    name := """assets-manager""",
     version := "2.8.x",
     scalaVersion := "2.13.4",
     libraryDependencies ++= Seq(
