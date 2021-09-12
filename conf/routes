@@ -1,0 +1,17 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+#GET     /                           controllers.PersonController.index
+#POST    /person                     controllers.PersonController.addPerson
+#GET     /persons                    controllers.PersonController.getPersons
+
+GET     /user/:username             co.com.application.controllers.queries.FindUserQuery.findUser( username: String )
+GET     /user-zio/:username         co.com.application.controllers.queries.FindUserQueryZIO.findUser( username: String )
+GET     /posts                      co.com.application.controllers.queries.RequestPosts.request
+
+POST    /user                       co.com.application.controllers.commands.CreateUserCommand.create
+
+# Map static resources from the /public folder to the /assets URL path
+#GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
