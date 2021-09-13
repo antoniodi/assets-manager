@@ -22,6 +22,7 @@ lazy val root = (project in file("."))
       "org.postgresql"              % "postgresql"                % "42.2.5",
       "com.h2database"              % "h2"                        % "1.4.199",
       "dev.zio"                     %% "zio"                      % "2.0.0-M2",
+      "dev.zio"                     %% "zio-streams"              % "2.0.0-M2",
       "dev.zio"                     %% "zio-test-sbt"             % "2.0.0-M2"    % Test,
       "org.scalatest"               %% "scalatest"                % "3.2.7"     % Test,
       "org.scalamock"               %% "scalamock"                % "5.1.0"     % Test,
