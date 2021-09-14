@@ -1,4 +1,4 @@
-package co.com.application.acl.dtos
+package co.com.infrastructure.acl.dtos
 
 import co.com.domain.model.entities.User
 

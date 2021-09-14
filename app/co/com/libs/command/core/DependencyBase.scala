@@ -1,3 +1,3 @@
 package co.com.libs.command.core
 
-class DependencyBase
+trait DependencyBase

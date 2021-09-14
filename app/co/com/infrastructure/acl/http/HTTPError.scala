@@ -1,17 +1,16 @@
-package co.com.application.acl.http
+package co.com.infrastructure.acl.http
 
-import cats.data.NonEmptyList
-import co.com.application.acl.formats.Formats._
-import co.com.suite.error.ApplicationError
+import co.com.infrastructure.acl.formats.Formats._
+import co.com.libs.error.AppError
 import play.api.http.ContentTypes
 import play.api.libs.json.Json
 import play.api.mvc.Results
 
 trait HTTPError extends Results with ContentTypes {
 
-  def errorHttp( status: Status )( errors: NonEmptyList[ApplicationError] ) = {
+  def errorHttp( status: Status )( errors: AppError ) = {
     status.apply( Json.obj(
-      "errors" -> Json.toJson( errors.toList )
+      "errors" -> Json.toJson( errors )
     ).toString ).as( JSON )
   }
 

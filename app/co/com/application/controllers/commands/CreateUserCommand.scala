@@ -1,15 +1,15 @@
 package co.com.application.controllers.commands
 
-import cats.data.NonEmptyList
-import co.com.application.acl.dtos.UserDTO
-import co.com.application.acl.formats.Formats._
-import co.com.application.acl.http.HTTPError
-import co.com.suite.error.{ DetailServiceError, SaveError }
+import co.com.infrastructure.acl.dtos.UserDTO
+import co.com.infrastructure.acl.formats.Formats._
+import co.com.infrastructure.acl.http.HTTPError
+import co.com.libs.akka.interop.zio.AkkaHttpEnhancement._
+import co.com.libs.error.InfrastructureError
 import play.api.libs.json.Json
 import play.api.mvc.{ MessagesAbstractController, MessagesControllerComponents }
 
 import javax.inject.Inject
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.ExecutionContext
 
 class CreateUserCommand @Inject() (
     dependency: Dependency,
@@ -18,19 +18,23 @@ class CreateUserCommand @Inject() (
 
   implicit val sc = commandScheduler
 
-  def create = Action.async { request =>
-    request.body.asJson.fold {
-      Future.successful( badRequest( NonEmptyList.of( DetailServiceError( s"For request ${request.toString} [Invalid Json]" ) ) ) )
-    }( json => json.validate[UserDTO].fold( { errors =>
-      Future.successful( badRequest( NonEmptyList.of( DetailServiceError( s"For request ${request.toString} [Invalid Json: ${errors.toList.mkString( ", " )}]" ) ) ) )
-    }, { userDTO =>
-
-      dependency.savePersistenceUserService.saveUser( userDTO ).run( dependency ).fold( {
-        internalServerError( _ )
-      }, { value =>
-        Ok( Json.toJson( value.toString ) )
-      } ).runToFuture
-    } ) )
+  def create = Action.zio { request =>
+    //    request.body.asJson.fold {
+    //      badRequest( InfrastructureError( s"For request ${request.toString} [Invalid Json]" ) )
+    //    } {
+    //      _.validate[UserDTO].fold( { errors =>
+    //        badRequest( InfrastructureError( s"For request ${request.toString} [Invalid Json: ${errors.toList.mkString( ", " )}]" ) )
+    //      }, { userDTO =>
+    //
+    //        dependency.savePersistenceUserService.saveUser( userDTO ).provide( dependency ).fold( {
+    //          internalServerError( _ )
+    //        }, { value =>
+    //          Ok( Json.toJson( value.toString ) )
+    //        } )
+    //      } )
+    //
+    //    }
+    ???
   }
 
 }

@@ -1,7 +1,7 @@
 package co.com.application.controllers.queries
 
-import co.com.application.acl.formats.Formats._
-import co.com.application.acl.http.HTTPError
+import co.com.infrastructure.acl.formats.Formats._
+import co.com.infrastructure.acl.http.HTTPError
 import co.com.application.controllers.commands.Dependency
 import org.slf4j
 import play.api.Logger
@@ -21,15 +21,16 @@ class FindUserQuery @Inject() (
 
   def findUser( username: String ): Action[AnyContent] = Action.async { implicit request =>
 
-    logger.info( "find users" )
-    dependency.userRepo.findWithFuture( username ).run( dependency.dbReadOnly )
-      .fold( { errors =>
-        logger.error( s"an error was occurred: ${errors.toString()}." )
-        internalServerError( errors )
-      }, user => {
-        logger.info( s"user was found: ${user.toString}." )
-        Ok( Json.toJson( user ) )
-      } )
+    //    logger.info( "find users" )
+    //    dependency.userRepo.findWithFuture( username ).run( dependency.dbReadOnly )
+    //      .fold( { errors =>
+    //        logger.error( s"an error was occurred: ${errors.toString()}." )
+    //        internalServerError( errors )
+    //      }, user => {
+    //        logger.info( s"user was found: ${user.toString}." )
+    //        Ok( Json.toJson( user ) )
+    //      } )
+    ???
   }
 
 }

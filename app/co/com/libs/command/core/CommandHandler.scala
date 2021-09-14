@@ -1,9 +1,11 @@
 package co.com.libs.command.core
 
+import co.com.libs.akka.interop.zio.AkkaHttpEnhancement._
+import co.com.libs.error.AppError
 import play.api.mvc._
+import zio.IO
 
 import javax.inject.Inject
-import scala.concurrent.Future
 
 abstract class CommandHandler @Inject() ( dependency: DependencyBase, cc: MessagesControllerComponents ) extends MessagesAbstractController( cc ) {
 
@@ -16,13 +18,14 @@ abstract class CommandHandler @Inject() ( dependency: DependencyBase, cc: Messag
     }
   }
 
-  def execute( commandHelper: CommandHelper ): Action[AnyContent] = Action.async { request =>
+  def execute( commandHelper: CommandHelper ): Action[AnyContent] = Action.zio { request =>
     request.body.asJson.fold {
-      Future.successful( Results.BadRequest( "Invalid Json" ) )
-    } { _.validate[Command]( commandHelper.commandReads ).fold( { invalid =>
-        Future.successful( Results.BadRequest( s"For request ${request.toString()} [Invalid Json: ${invalid.toString()}]" ) )
+      IO.fromEither[AppError, Result]( Right( Results.BadRequest( "Invalid Json" ) ) )
+    } {
+      _.validate[Command]( commandHelper.commandReads ).fold( { invalid =>
+        IO.fromEither[AppError, Result]( Right( Results.BadRequest( s"For request ${request.toString()} [Invalid Json: ${invalid.toString()}]" ) ) )
       }, { command =>
-        command.execute.run( dependency )
+        command.execute.provide( dependency )
       } )
     }
   }

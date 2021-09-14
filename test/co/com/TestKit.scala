@@ -2,7 +2,7 @@ package co.com
 
 import co.com.application.controllers.commands.Dependency
 import co.com.application.services.{ PersistenceUserService, ServiceHelper }
-import co.com.domain.contracts.UserRepositoryBase
+import co.com.application.contracts.UserRepositoryBase
 import co.com.domain.services.UserService
 import co.com.infrastructure.persistence.repositories.configFileTest
 import co.com.infrastructure.services.RequestPostService

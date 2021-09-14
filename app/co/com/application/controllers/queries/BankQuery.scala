@@ -1,11 +1,11 @@
 package co.com.application.controllers.queries
 
 import cats.effect.{ ContextShift, IO }
-import co.com.application.acl.http.HTTPError
+import co.com.infrastructure.acl.http.HTTPError
 import co.com.application.controllers.commands.Dependency
 import play.api.libs.json.Json
 import play.api.mvc.{ MessagesAbstractController, MessagesControllerComponents }
-import co.com.application.acl.formats.Formats.bankDTOWrite
+import co.com.infrastructure.acl.formats.Formats.bankDTOWrite
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContextExecutorService

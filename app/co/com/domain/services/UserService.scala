@@ -1,21 +1,25 @@
 package co.com.domain.services
 
 import akka.Done
-import cats.data.NonEmptyList
 import co.com.domain.model.entities.User
-import co.com.suite.error.{ ApplicationError, UserAlreadyExits, UserNotFound }
+import co.com.libs.error.{ AppError, BusinessError }
+import zio.IO
 
 trait UserService {
 
-  def validateUser( user: Option[User] ): Either[NonEmptyList[ApplicationError], User] = {
-    user.fold[Either[NonEmptyList[ApplicationError], User]]( Left( NonEmptyList.of( UserNotFound ) ) )( Right( _ ) )
+  def validateUser( user: Option[User] ): IO[AppError, User] = {
+    user.fold[IO[AppError, User]] {
+      IO.fail( BusinessError( s"User not found" ) )
+    } { user =>
+      IO.succeed( user )
+    }
   }
 
-  def validateExistingUser( user: Option[User] ): Either[NonEmptyList[ApplicationError], Done] = {
-    user.fold[Either[NonEmptyList[ApplicationError], Done]] {
-      Right( Done )
+  def validateExistingUser( user: Option[User] ): IO[AppError, Done] = {
+    user.fold[IO[AppError, Done]] {
+      IO.succeed( Done )
     } { user =>
-      Left( NonEmptyList.of( UserAlreadyExits( user.username ) ) )
+      IO.fail( BusinessError( s"The user ${user.username} already exits" ) )
     }
   }
 }

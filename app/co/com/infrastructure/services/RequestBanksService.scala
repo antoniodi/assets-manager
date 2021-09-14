@@ -1,7 +1,7 @@
 package co.com.infrastructure.services
 
 import cats.effect.{ ContextShift, IO }
-import co.com.application.acl.dtos.BankDTO
+import co.com.infrastructure.acl.dtos.BankDTO
 
 import scala.concurrent.Future
 

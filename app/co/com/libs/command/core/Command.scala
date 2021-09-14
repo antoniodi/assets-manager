@@ -1,12 +1,11 @@
 package co.com.libs.command.core
 
-import cats.data.Reader
+import co.com.libs.error.AppError
 import play.api.mvc.Result
-
-import scala.concurrent.Future
+import zio.ZIO
 
 trait Command {
 
-  def execute: Reader[DependencyBase, Future[Result]]
+  def execute: ZIO[DependencyBase, AppError, Result]
 
 }

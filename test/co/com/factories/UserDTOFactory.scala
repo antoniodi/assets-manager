@@ -1,6 +1,6 @@
 package co.com.factories
 
-import co.com.application.acl.dtos.UserDTO
+import co.com.infrastructure.acl.dtos.UserDTO
 
 object UserDTOFactory {
 

@@ -3,9 +3,9 @@ package co.com.infrastructure.persistence.repositories
 import akka.Done
 import cats.data.NonEmptyList
 import co.com.factories.UserFactory.LouisUser
-import co.com.suite.error.ApplicationError
+import co.com.libs.error.ApplicationError
 import co.com.tool.FutureTool.waitForFutureResult
-import co.com.{ TestKit, TestKitBase }
+import co.com.{TestKit, TestKitBase}
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import slick.dbio.DBIO
