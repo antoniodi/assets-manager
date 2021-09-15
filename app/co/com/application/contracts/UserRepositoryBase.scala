@@ -17,6 +17,7 @@ trait UserRepositoryBase {
   def findWithTask( username: String ): Reader[DatabaseConfig[JdbcProfile], EitherTResult[Option[User]]]
   def findWithFuture( username: String )( implicit ec: ExecutionContext ): Reader[DatabaseConfig[JdbcProfile], EitherFResult[Option[User]]]
   def findWithZio( username: String ): ZIOS[DatabaseConfig[JdbcProfile], Option[User]]
+  def findAll(): ZIOS[DatabaseConfig[JdbcProfile], List[User]]
   def generateId(): String
 
 }

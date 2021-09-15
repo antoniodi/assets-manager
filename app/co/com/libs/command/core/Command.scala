@@ -1,11 +1,11 @@
 package co.com.libs.command.core
 
-import co.com.libs.error.AppError
+import cats.data.Reader
 import play.api.mvc.Result
-import zio.ZIO
+import zio.UIO
 
 trait Command {
 
-  def execute: ZIO[DependencyBase, AppError, Result]
+  def execute: Reader[DependencyBase, UIO[Result]]
 
 }

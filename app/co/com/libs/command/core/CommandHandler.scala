@@ -1,9 +1,8 @@
 package co.com.libs.command.core
 
 import co.com.libs.akka.interop.zio.AkkaHttpEnhancement._
-import co.com.libs.error.AppError
 import play.api.mvc._
-import zio.IO
+import zio.UIO
 
 import javax.inject.Inject
 
@@ -20,12 +19,12 @@ abstract class CommandHandler @Inject() ( dependency: DependencyBase, cc: Messag
 
   def execute( commandHelper: CommandHelper ): Action[AnyContent] = Action.zio { request =>
     request.body.asJson.fold {
-      IO.fromEither[AppError, Result]( Right( Results.BadRequest( "Invalid Json" ) ) )
+      UIO.succeed( Results.BadRequest( "Invalid Json" ) )
     } {
       _.validate[Command]( commandHelper.commandReads ).fold( { invalid =>
-        IO.fromEither[AppError, Result]( Right( Results.BadRequest( s"For request ${request.toString()} [Invalid Json: ${invalid.toString()}]" ) ) )
+        UIO.succeed( Results.BadRequest( s"For request ${request.toString()} [Invalid Json: ${invalid.toString()}]" ) )
       }, { command =>
-        command.execute.provide( dependency )
+        command.execute.run( dependency )
       } )
     }
   }

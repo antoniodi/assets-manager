@@ -53,7 +53,7 @@ object UserRepository extends UserRepositoryBase {
     val insert = users += userToUserRow( user, validFrom )
     ZIO.fromDBIO( insert )
       .map( _ => Done )
-      .refineOrDie( error => {
+      .mapError( error => {
         val errorMessage = s"An error occurred trying to save the users with username: ${user.username}."
         logger.error( errorMessage, error )
         InfrastructureError( errorMessage )
@@ -81,6 +81,16 @@ object UserRepository extends UserRepositoryBase {
       .map( _.headOption.map( userRowToUser ) )
       .refineOrDie( error => {
         val errorMessage = s"An error occurred trying to find the user with username: $username."
+        logger.error( errorMessage, error )
+        InfrastructureError( errorMessage )
+      } )
+  }
+
+  def findAll(): ZIOS[DatabaseConfig[JdbcProfile], List[User]] = {
+    ZIO.fromDBIO( users.result )
+      .map( _.map( userRowToUser ).toList )
+      .refineOrDie( error => {
+        val errorMessage = s"An error occurred trying to find all users."
         logger.error( errorMessage, error )
         InfrastructureError( errorMessage )
       } )
