@@ -6,9 +6,9 @@ import zio.UIO
 
 import javax.inject.Inject
 
-abstract class CommandHandler @Inject() ( dependency: DependencyBase, cc: MessagesControllerComponents ) extends MessagesAbstractController( cc ) {
+abstract class CommandHandler[D <: DependencyBase] @Inject() ( dependency: D, cc: MessagesControllerComponents ) extends MessagesAbstractController( cc ) {
 
-  def commandHelperList: List[CommandHelper]
+  def commandHelperList: List[CommandHelper[D]]
 
   def executeCommand( commandName: String ): Action[AnyContent] = {
     commandHelperList.find( _.name == commandName ) match {
@@ -17,14 +17,14 @@ abstract class CommandHandler @Inject() ( dependency: DependencyBase, cc: Messag
     }
   }
 
-  def execute( commandHelper: CommandHelper ): Action[AnyContent] = Action.zio { request =>
+  def execute( commandHelper: CommandHelper[D] ): Action[AnyContent] = Action.zio { request =>
     request.body.asJson.fold {
       UIO.succeed( Results.BadRequest( "Invalid Json" ) )
     } {
-      _.validate[Command]( commandHelper.commandReads ).fold( { invalid =>
+      _.validate[Command[D]]( commandHelper.commandReads ).fold( { invalid =>
         UIO.succeed( Results.BadRequest( s"For request ${request.toString()} [Invalid Json: ${invalid.toString()}]" ) )
       }, { command =>
-        command.execute.run( dependency )
+        command.execute.provide( dependency )
       } )
     }
   }

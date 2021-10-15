@@ -1,14 +1,14 @@
 package co.com.application.services
 
 import akka.Done
-import co.com.application.controllers.commands.Dependency
-import co.com.infrastructure.Types.ZIOS
 import co.com.infrastructure.acl.dtos.UserDTO
+import co.com.infrastructure.controllers.commands.Dependency
+import co.com.libs.error.AppError
 import zio.ZIO
 
 trait PersistenceUserService {
 
-  def saveUser( userDTO: UserDTO ): ZIOS[Dependency, Done] = {
+  def saveUser( userDTO: UserDTO ): ZIO[Dependency, AppError, Done] = {
     for {
       dependency <- ZIO.environment[Dependency]
       user <- dependency.userRepo.findWithZio( userDTO.username ).provide( dependency.dbReadOnly )

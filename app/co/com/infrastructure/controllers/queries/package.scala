@@ -1,4 +1,4 @@
-package co.com.application.controllers
+package co.com.infrastructure.controllers
 
 import co.com.{ maxQueryThreadPool, newCustomCachedThreadPool }
 import monix.execution.ExecutionModel.AlwaysAsyncExecution

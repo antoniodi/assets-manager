@@ -1,7 +1,7 @@
-package co.com.application.controllers.commands
+package co.com.infrastructure.controllers.commands
 
-import co.com.application.contracts.UserRepositoryBase
-import co.com.application.services.{ PersistenceUserService, ServiceHelper }
+import co.com.application.ports.persistance.UserRepositoryBase
+import co.com.application.services.{ AssetService, PersistenceUserService, ServiceHelper }
 import co.com.domain.services.UserService
 import co.com.infrastructure.persistence.dbConfigH2
 import co.com.infrastructure.persistence.repositories.UserRepository
@@ -22,7 +22,7 @@ class CommandController @Inject() (
     cc: MessagesControllerComponents
 ) extends CommandHandler( dependency, cc ) {
 
-  val commandHelperList: List[CommandHelper] = List( new CreateUserZioCommandHelper() )
+  val commandHelperList: List[CommandHelper[Dependency]] = List( new CreateUserZioCommandHelper() )
 }
 
 @Singleton
@@ -36,11 +36,18 @@ class Dependency @Inject() (
   lazy val dbConfig: DatabaseConfig[JdbcProfile] = dbConfigH2
   lazy val dbReadOnly: DatabaseConfig[JdbcProfile] = dbConfigH2
 
-  lazy val userRepo: UserRepositoryBase = UserRepository
-
+  // Services
+  lazy val assetService: AssetService = AssetService
   lazy val serviceHelper: ServiceHelper = ServiceHelper
-  lazy val savePersistenceUserService: PersistenceUserService = PersistenceUserService
-  lazy val userService: UserService = UserService
+
+  // Adapters
   lazy val requestBanksService: RequestBanksService = RequestBanksService
   lazy val requestPostService: RequestPostService = RequestPostService
+
+  // Repositories
+  lazy val userRepo: UserRepositoryBase = UserRepository
+
+  lazy val savePersistenceUserService: PersistenceUserService = PersistenceUserService
+  lazy val userService: UserService = UserService
+
 }

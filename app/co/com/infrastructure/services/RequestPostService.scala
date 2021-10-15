@@ -1,9 +1,9 @@
 package co.com.infrastructure.services
 
 import cats.data.Reader
-import co.com.application.controllers.commands.Dependency
 import co.com.infrastructure.Types.EitherTResult
 import co.com.infrastructure.acl.dtos.PostDTO
+import co.com.infrastructure.controllers.commands.Dependency
 
 trait RequestPostService {
 
