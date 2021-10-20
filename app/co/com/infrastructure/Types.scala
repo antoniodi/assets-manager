@@ -4,7 +4,7 @@ import cats.data.{ EitherT, NonEmptyList }
 import co.com.libs.error
 import co.com.libs.error.AppError
 import monix.eval.Task
-import zio.{ IO, ZIO }
+import zio.ZIO
 
 import scala.concurrent.Future
 
@@ -15,7 +15,5 @@ object Types {
   type EitherFResult[A] = EitherT[Future, NonEmptyList[error.ApplicationError], A]
 
   type ZIOS[-R, +A] = ZIO[R, AppError, A]
-
-  type IOS[+A] = IO[AppError, A]
 
 }

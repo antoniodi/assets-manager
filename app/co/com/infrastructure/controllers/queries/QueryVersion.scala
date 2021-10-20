@@ -1,7 +1,6 @@
 package co.com.infrastructure.controllers.queries
 
 import javax.inject._
-import play.api._
 import play.api.mvc._
 
 /**
@@ -9,7 +8,7 @@ import play.api.mvc._
  * application's home page.
  */
 @Singleton
-class QueryVersion @Inject()(val controllerComponents: ControllerComponents ) extends BaseController {
+class QueryVersion @Inject() ( val controllerComponents: ControllerComponents ) extends BaseController {
 
   /**
    * Create an Action to render an HTML page.

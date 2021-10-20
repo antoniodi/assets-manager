@@ -4,7 +4,7 @@ lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
   .settings(
     name := """assets-manager""",
-    version := "2.8.x",
+    version := "2.8.8",
     scalaVersion := "2.13.4",
     libraryDependencies ++= Seq(
       ws,

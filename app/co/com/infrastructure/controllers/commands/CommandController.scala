@@ -22,7 +22,8 @@ class CommandController @Inject() (
     cc: MessagesControllerComponents
 ) extends CommandHandler( dependency, cc ) {
 
-  val commandHelperList: List[CommandHelper[Dependency]] = List( new CreateUserZioCommandHelper() )
+  val commandHelperList: List[CommandHelper[Dependency]] =
+    List( new CreateUserZioCommandHelper(), new CreateAssetCommandHelper() )
 }
 
 @Singleton
@@ -36,7 +37,7 @@ class Dependency @Inject() (
   lazy val dbConfig: DatabaseConfig[JdbcProfile] = dbConfigH2
   lazy val dbReadOnly: DatabaseConfig[JdbcProfile] = dbConfigH2
 
-  // Services
+  // Application services
   lazy val assetService: AssetService = AssetService
   lazy val serviceHelper: ServiceHelper = ServiceHelper
 
