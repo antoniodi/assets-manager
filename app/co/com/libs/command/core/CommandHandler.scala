@@ -19,26 +19,11 @@ abstract class CommandHandler[D <: DependencyBase] @Inject() ( dependency: D, cc
   }
 
   def execute( commandHelper: CommandHelper[D] ): Action[JsValue] = Action.zio( parse.json ) { request =>
-//    request.body.validate[Command[D]]( commandHelper.commandReads ) match {
-//      case JsSuccess( command, _ ) => command.execute.provide( dependency )
-//      case JsError( errors )       => UIO.succeed( BadRequest( s"For request ${request.toString()} [Invalid Json: $errors]" ) )
-//    }
-
-        request.body.validate[Command[D]]( commandHelper.commandReads ).fold( { invalid =>
-            UIO.succeed( BadRequest( s"For request ${request.toString()} [Invalid Json: ${invalid.toString()}]" ) )
-          }, { command =>
-            command.execute.provide( dependency )
-          } )
-
-    //    request.body.asJson.fold {
-    //      UIO.succeed( Results.BadRequest( "Invalid Json" ) )
-    //    } {
-    //      _.validate[Command[D]]( commandHelper.commandReads ).fold( { invalid =>
-    //        UIO.succeed( Results.BadRequest( s"For request ${request.toString()} [Invalid Json: ${invalid.toString()}]" ) )
-    //      }, { command =>
-    //        command.execute.provide( dependency )
-    //      } )
-    //    }
+    request.body.validate[Command[D]]( commandHelper.commandReads ).fold( { invalid =>
+      UIO.succeed( BadRequest( s"For request ${request.toString()} [Invalid Json: ${invalid.toString()}]" ) )
+    }, { command =>
+      command.execute.provide( dependency )
+    } )
   }
 
 }
