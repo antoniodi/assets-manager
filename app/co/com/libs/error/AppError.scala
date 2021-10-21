@@ -6,19 +6,27 @@ sealed trait AppError {
   def message: String
 }
 
-case class BusinessError( message: String ) extends AppError {
+trait BusinessErrorBase extends AppError {
   val errorType: ErrorType = Business
+  def message: String
 }
 
-case class ApplicationError( message: String ) extends AppError {
-  val errorType: ErrorType = Infrastructure
+case class BusinessError( message: String ) extends BusinessErrorBase
+
+trait ApplicationErrorBase extends AppError {
+  val errorType: ErrorType = Application
+  def message: String
 }
 
-trait InfrastructureError extends AppError {
+case class ApplicationError( message: String ) extends ApplicationErrorBase
+
+trait InfrastructureErrorBase extends AppError {
   val errorType: ErrorType = Infrastructure
   def message: String
 }
 
-case class TransformationError( message: String ) extends InfrastructureError
+case class InfrastructureError( message: String ) extends InfrastructureErrorBase
 
-case class DataBaseError( message: String ) extends InfrastructureError
+case class TransformationError( message: String ) extends InfrastructureErrorBase
+
+case class DataBaseError( message: String ) extends InfrastructureErrorBase
