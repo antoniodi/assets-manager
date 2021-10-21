@@ -13,7 +13,7 @@ object Currency {
     case "USD" => IO.succeed( USD )
     case "COP" => IO.succeed( COP )
     case "EUR" => IO.succeed( EUR )
-    case _     => IO.fail( BusinessError( s"The currency amount $currencyCode is not supported." ) )
+    case _     => IO.fail( BusinessError( s"The currency [$currencyCode] is not supported yet." ) )
   }
 }
 
