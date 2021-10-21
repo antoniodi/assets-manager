@@ -1,6 +1,7 @@
 package co.com.domain.model.types
 
 import co.com.libs.error.BusinessError
+import zio.IO
 
 trait Currency {
   def code: String
@@ -8,11 +9,11 @@ trait Currency {
 }
 
 object Currency {
-  def apply( currencyCode: String ): Either[BusinessError, Currency] = currencyCode match {
-    case "USD" => Right( USD )
-    case "COP" => Right( COP )
-    case "EUR" => Right( EUR )
-    case _     => Left( BusinessError( s"The currency amount $currencyCode is not supported." ) )
+  def apply( currencyCode: String ): IO[BusinessError, Currency] = currencyCode match {
+    case "USD" => IO.succeed( USD )
+    case "COP" => IO.succeed( COP )
+    case "EUR" => IO.succeed( EUR )
+    case _     => IO.fail( BusinessError( s"The currency amount $currencyCode is not supported." ) )
   }
 }
 

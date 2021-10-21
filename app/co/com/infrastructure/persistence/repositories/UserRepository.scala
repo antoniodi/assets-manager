@@ -9,7 +9,7 @@ import co.com.infrastructure.controllers.queries.queryExecutionContext
 import co.com.infrastructure.persistence.generarUUID
 import co.com.infrastructure.persistence.tables.users
 import co.com.infrastructure.persistence.transformers.UserTransformer.{ userRowToUser, userToUserRow }
-import co.com.libs.error.{ AppError, InfrastructureError }
+import co.com.libs.error.{ AppError, DataBaseError }
 import co.com.libs.slick.interop.zio.SlickEnhancement._
 import org.slf4j
 import play.api.Logger
@@ -34,7 +34,7 @@ object UserRepository extends UserRepositoryBase {
       .mapError( error => {
         val errorMessage = s"An error occurred trying to save the users with username: ${user.username}."
         logger.error( errorMessage, error )
-        InfrastructureError( errorMessage )
+        DataBaseError( errorMessage )
       } )
   }
 
@@ -45,7 +45,7 @@ object UserRepository extends UserRepositoryBase {
       .refineOrDie( error => {
         val errorMessage = s"An error occurred trying to find the user with username: $username."
         logger.error( errorMessage, error )
-        InfrastructureError( errorMessage )
+        DataBaseError( errorMessage )
       } )
   }
 
@@ -55,7 +55,7 @@ object UserRepository extends UserRepositoryBase {
       .refineOrDie( error => {
         val errorMessage = s"An error occurred trying to find all users."
         logger.error( errorMessage, error )
-        InfrastructureError( errorMessage )
+        DataBaseError( errorMessage )
       } )
   }
 

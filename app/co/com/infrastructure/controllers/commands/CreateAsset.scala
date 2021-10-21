@@ -11,16 +11,19 @@ import play.api.libs.json.{ JsPath, Json, Reads }
 import play.api.mvc.{ Result, Results }
 import zio.{ URIO, ZIO }
 
+import java.util.UUID
+
 case class CreateAssetCommand( dto: CreateAssetDTO ) extends Command[Dependency] with Results with ContentTypes {
 
   def execute: URIO[Dependency, Result] = {
-    toAsset( dto ).flatMap { asset =>
-      ZIO.accessZIO[Dependency]( _.assetService.saveAsset( asset ) )
-    }.fold( {
-      handleHttpError
-    }, { result =>
-      Ok( Json.toJson( result ) ).as( JSON )
-    } )
+    val uid = UUID.randomUUID().toString
+    toAsset( uid, dto )
+      .flatMap( asset => ZIO.accessZIO[Dependency]( _.assetService.saveAsset( asset ) ) )
+      .fold( {
+        handleHttpError
+      }, { result =>
+        Ok( Json.toJson( result ) ).as( JSON )
+      } )
   }
 }
 

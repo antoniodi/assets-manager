@@ -1,12 +1,14 @@
 package co.com.domain.model.entities
 
 sealed trait Asset {
-  def id: String
+  def id: AssetId
 
   def description: String
 
   def transactions: List[Transaction]
 }
+
+case class AssetId( id: String )
 
 sealed trait Salable {
   def cost: CurrencyAmount
@@ -19,7 +21,7 @@ sealed trait Affordable {
 sealed trait Merchantable extends Salable with Affordable
 
 case class RealEstate(
-    id: String,
+    id: AssetId,
     description: String,
     cost: CurrencyAmount,
     transactions: List[Transaction] = Nil,

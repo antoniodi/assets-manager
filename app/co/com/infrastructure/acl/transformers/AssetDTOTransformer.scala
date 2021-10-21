@@ -1,7 +1,8 @@
 package co.com.infrastructure.acl.transformers
 
-import co.com.domain.model.entities.Asset
+import co.com.domain.model.entities.{ Asset, AssetId, RealEstate }
 import co.com.infrastructure.acl.dtos.{ AssetDTO, CreateAssetDTO, CreateRealEstateDTO, RealEstateDTO }
+import co.com.infrastructure.acl.transformers.CurrencyAmountTransformer.toCurrencyAmount
 import co.com.libs.error.AppError
 import zio.IO
 
@@ -14,11 +15,16 @@ object AssetDTOTransformer {
     }
   }
 
-  def toAsset( dto: CreateAssetDTO ): IO[AppError, Asset] = {
+  def toAsset( assetId: String, dto: CreateAssetDTO ): IO[AppError, Asset] = {
+    val id = AssetId( assetId )
     dto match {
-      case CreateRealEstateDTO( assetType, description, cost ) => ???
-      case _ => ???
+      case realEstate: CreateRealEstateDTO => toRealEstate( id, realEstate )
     }
+  }
+
+  def toRealEstate( id: AssetId, dto: CreateRealEstateDTO ): IO[AppError, Asset] = {
+    toCurrencyAmount( dto.cost ).map( RealEstate( id, dto.description, _ ) )
+
   }
 
 }

@@ -14,6 +14,11 @@ case class ApplicationError( message: String ) extends AppError {
   val errorType: ErrorType = Infrastructure
 }
 
-case class InfrastructureError( message: String ) extends AppError {
+trait InfrastructureError extends AppError {
   val errorType: ErrorType = Infrastructure
+  def message: String
 }
+
+case class TransformationError( message: String ) extends InfrastructureError
+
+case class DataBaseError( message: String ) extends InfrastructureError
