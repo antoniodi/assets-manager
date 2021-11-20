@@ -2,36 +2,11 @@ import scalariform.formatter.preferences.{AlignSingleLineCaseStatements, Danglin
 
 val msName = "ms-assets-manager"
 
-//assemblyMergeStrategy in assembly := {
-//  case PathList("META-INF", "org", "apache", "logging", "log4j", "core", "config", "plugins", _*) => Log4j2MergeStrategy.plugincache
-//  case PathList("org", "apache", "commons", "logging", xs @ _*)  => MergeStrategy.first
-//
-//  case x if x.endsWith("io.netty.versions.properties") => MergeStrategy.first
-//  case x =>
-//    val oldStrategy = (assemblyMergeStrategy in assembly).value
-//    oldStrategy(x)
-//}
-//
-//mainClass in assembly := Some("play.core.server.ProdServerStart")
-//fullClasspath in assembly += Attributed.blank(PlayKeys.playPackageAssets.value)
-//
-//assemblyMergeStrategy in assembly := {
-//  case manifest if manifest.contains("MANIFEST.MF") =>
-//    // We don't need manifest files since sbt-assembly will create
-//    // one with the given settings
-//    MergeStrategy.discard
-//  case referenceOverrides if referenceOverrides.contains("reference-overrides.conf") =>
-//    // Keep the content for all reference-overrides.conf files
-//    MergeStrategy.concat
-//  case x =>
-//    // For all the other files, use the default sbt-assembly merge strategy
-//    val oldStrategy = (assemblyMergeStrategy in assembly).value
-//    oldStrategy(x)
-//}
-
 mainClass in assembly := Some("play.core.server.ProdServerStart")
 fullClasspath in assembly += Attributed.blank(PlayKeys.playPackageAssets.value)
 
+// documentation about the assembly plugin
+// https://github.com/sbt/sbt-assembly#merge-strategy
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", _*) => MergeStrategy.discard
   case manifest if manifest.contains("MANIFEST.MF") =>
