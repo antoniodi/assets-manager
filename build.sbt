@@ -1,11 +1,68 @@
 import scalariform.formatter.preferences.{AlignSingleLineCaseStatements, DanglingCloseParenthesis, DoubleIndentConstructorArguments, Preserve, SpaceInsideParentheses, SpacesWithinPatternBinders}
 
+val msName = "ms-assets-manager"
+
+//assemblyMergeStrategy in assembly := {
+//  case PathList("META-INF", "org", "apache", "logging", "log4j", "core", "config", "plugins", _*) => Log4j2MergeStrategy.plugincache
+//  case PathList("org", "apache", "commons", "logging", xs @ _*)  => MergeStrategy.first
+//
+//  case x if x.endsWith("io.netty.versions.properties") => MergeStrategy.first
+//  case x =>
+//    val oldStrategy = (assemblyMergeStrategy in assembly).value
+//    oldStrategy(x)
+//}
+//
+//mainClass in assembly := Some("play.core.server.ProdServerStart")
+//fullClasspath in assembly += Attributed.blank(PlayKeys.playPackageAssets.value)
+//
+//assemblyMergeStrategy in assembly := {
+//  case manifest if manifest.contains("MANIFEST.MF") =>
+//    // We don't need manifest files since sbt-assembly will create
+//    // one with the given settings
+//    MergeStrategy.discard
+//  case referenceOverrides if referenceOverrides.contains("reference-overrides.conf") =>
+//    // Keep the content for all reference-overrides.conf files
+//    MergeStrategy.concat
+//  case x =>
+//    // For all the other files, use the default sbt-assembly merge strategy
+//    val oldStrategy = (assemblyMergeStrategy in assembly).value
+//    oldStrategy(x)
+//}
+
+mainClass in assembly := Some("play.core.server.ProdServerStart")
+fullClasspath in assembly += Attributed.blank(PlayKeys.playPackageAssets.value)
+
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", _*) => MergeStrategy.discard
+  case manifest if manifest.contains("MANIFEST.MF") =>
+    // We don't need manifest files since sbt-assembly will create
+    // one with the given settings
+    MergeStrategy.discard
+  case x if x.contains("module-info.class")                          => MergeStrategy.rename
+  case x if x.contains("scala-collection-compat.properties")         => MergeStrategy.concat
+  case x if x.contains("package.class")         => MergeStrategy.concat
+    case x if x.contains("package$.class")         => MergeStrategy.first
+  case referenceOverrides if referenceOverrides.contains("reference-overrides.conf") =>
+    // Keep the content for all reference-overrides.conf files
+    MergeStrategy.concat
+  case x =>
+    // For all the other files, use the default sbt-assembly merge strategy
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}
+
+assemblyJarName in assembly := s"$msName.jar"
+
+target in assembly := file("target")
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
   .settings(
-    name := """assets-manager""",
+    name := msName,
     version := "2.8.8",
     scalaVersion := "2.13.4",
+//    artifactName := { (_, _, artifact) => s"$msName.${artifact.extension}" },
+//    crossTarget := baseDirectory.value / "target",
     libraryDependencies ++= Seq(
       ws,
       filters,
@@ -23,7 +80,8 @@ lazy val root = (project in file("."))
       "com.h2database"              % "h2"                        % "1.4.199",
       "dev.zio"                     %% "zio"                      % "2.0.0-M2",
       "dev.zio"                     %% "zio-streams"              % "2.0.0-M2",
-      "dev.zio"                     %% "zio-test-sbt"             % "2.0.0-M2"    % Test,
+      "org.typelevel"               %% "squants"                  % "1.6.0",
+      "dev.zio"                     %% "zio-test-sbt"             % "2.0.0-M2"  % Test,
       "org.scalatest"               %% "scalatest"                % "3.2.7"     % Test,
       "org.scalamock"               %% "scalamock"                % "5.1.0"     % Test,
       specs2 % Test
@@ -37,7 +95,7 @@ lazy val root = (project in file("."))
     ),
     PlayKeys.devSettings := Seq("play.server.http.port" -> "9000"),
     coverageMinimum := 80,
-    coverageExcludedPackages := ".*ErrorHandler.*;.*Filters.*;.*Routes.*;.*Reverse.*;.*net.gmc.phoenix.*;.*BuildInfo.*;.*ControladorDeComandos*.",
+    coverageExcludedPackages := ".*ErrorHandler.*;.*Filters.*;.*Routes.*;.*Reverse.*;.*net.gmc.phoenix.*;.*BuildInfo.*.",
     coverageHighlighting := true,
     scalacOptions ++= Seq("-encoding", "utf8"),
     scalariformPreferences := scalariformPreferences.value
