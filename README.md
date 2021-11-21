@@ -11,7 +11,7 @@ App in scala with ZIO and play to manage your own assets
 `java "-Dconfig.resource=application.conf" -jar ms-assets-manager.jar`
 
 ### To run the generated jar with custom port and ip address
-`java "-Dconfig.resource=application.conf" "-Dhttp.port=9001" "-Dhttp.address=127.0.0.1" -jar ms-assets-manager.jar`
+`java "-Dconfig.resource=application.conf" "-Dhttp.port=9003" "-Dhttp.address=127.0.0.1" -jar ms-assets-manager.jar`
 
 To find more information about the configuration go to:
 https://www.playframework.com/documentation/2.5.x/ProductionConfiguration#Specifying-an-alternate-configuration-file

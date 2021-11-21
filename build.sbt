@@ -36,8 +36,6 @@ lazy val root = (project in file("."))
     name := msName,
     version := "2.8.8",
     scalaVersion := "2.13.4",
-    //    artifactName := { (_, _, artifact) => s"$msName.${artifact.extension}" },
-    //    crossTarget := baseDirectory.value / "target",
     libraryDependencies ++= Seq(
       ws,
       filters,
@@ -68,7 +66,7 @@ lazy val root = (project in file("."))
       "-deprecation",
       "-Xfatal-warnings"
     ),
-    PlayKeys.devSettings := Seq("play.server.http.port" -> "9000"),
+    PlayKeys.devSettings := Seq("play.server.http.port" -> "9003"),
     coverageMinimum := 80,
     coverageExcludedPackages := ".*ErrorHandler.*;.*Filters.*;.*Routes.*;.*Reverse.*;.*net.gmc.phoenix.*;.*BuildInfo.*.",
     coverageHighlighting := true,
