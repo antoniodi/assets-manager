@@ -4,7 +4,7 @@ App in scala with ZIO and play to manage your own assets
 ### To run the application in local environment:
 `sbt run`
 
-### To generate the uber jar, run from the terminal:
+### To generate the uber jar from the terminal:
 `sbt clean assembly`
 
 ### To run the generated jar with custom application config 
