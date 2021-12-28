@@ -1,10 +1,12 @@
 package co.com.application.services
 
 import cats.data.EitherT
-import co.com.{ TestKit, TestKitBase }
+import co.com.{TestKit, TestKitBase}
 import co.com.tool.FutureTool.waitForFutureResult
 import monix.eval.Task
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+
+import scala.reflect.runtime.universe.Try
 
 class ParallelProcessTest extends TestKit with TestKitBase {
 
@@ -60,6 +62,35 @@ class ParallelProcessTest extends TestKit with TestKitBase {
           }
         }
       }
+    }
+
+    "Interpolation" when {
+      val firstTen = ( n: Int ) => ( 1 to n ).foreach( println )
+      val task1 = Task( firstTen( 10 ) )
+      val task2 = Task( firstTen( 10 ) )
+      val a = "hola?como=asdf&estas=bien".split(Array('?', '=', '&')).toList match {
+        case List( hola, _, valor1, _, valor2, _* ) => (hola, valor1, valor2)
+        case _ => ("", "", "")
+      }
+//      val dialect, rest = s"jdbc:$dialect:$rest"
+      val s"$hola?como=$dialect&estas=$rest" = "hola?como=asdf&estas=bien"
+      val s"$hola1?como=$dialect1&estas=$rest1" = "hola?como"
+
+      def getValues(url: String) = {
+        try {
+          val s"$hola1?como=$dialect1&estas=$rest1" = url
+        }
+
+        (hola1, dialect1, rest1)
+      }
+
+//      val hola, valor1, valor2 = "hola?como=asdf&estas=bien" match {
+//        case s"$hola"
+//        case _ => ("", "")
+//      }
+
+
+      println(a)
     }
   }
 

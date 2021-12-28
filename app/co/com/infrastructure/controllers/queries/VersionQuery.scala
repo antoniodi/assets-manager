@@ -1,6 +1,6 @@
 package co.com.infrastructure.controllers.queries
 
-import co.com.infrastructure.controllers.commands.Dependency
+import co.com.infrastructure.config.Dependency
 import co.com.libs.akka.interop.zio.AkkaHttpEnhancement._
 import play.api.mvc._
 import zio.ZIO

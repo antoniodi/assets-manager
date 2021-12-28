@@ -3,7 +3,7 @@ package co.com.infrastructure.services
 import cats.data.Reader
 import co.com.infrastructure.Types.EitherTResult
 import co.com.infrastructure.acl.dtos.PostDTO
-import co.com.infrastructure.controllers.commands.Dependency
+import co.com.infrastructure.config.Dependency
 
 trait RequestPostService {
 

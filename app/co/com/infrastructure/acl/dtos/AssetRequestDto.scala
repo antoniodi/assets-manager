@@ -1,12 +1,13 @@
 package co.com.infrastructure.acl.dtos
 
-trait CreateAssetDTO {
+sealed trait AssetRequestDto {
   def assetType: String
 
   def description: String
 }
 
-case class CreateRealEstateDTO(
+case class RealEstateRequestDto(
     assetType: String,
     description: String,
-    cost: CurrencyAmountDTO ) extends CreateAssetDTO
+    cost: CurrencyAmountDto,
+    address: String ) extends AssetRequestDto

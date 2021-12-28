@@ -12,9 +12,9 @@ case class RealEstateDTO(
     id: String,
     assetType: String,
     description: String,
-    cost: CurrencyAmountDTO,
+    cost: CurrencyAmountDto,
     incomes: List[TransactionDTO] = Nil,
     expenses: List[TransactionDTO] = Nil,
-    sellPrice: Option[CurrencyAmountDTO] = None
+    sellPrice: Option[CurrencyAmountDto] = None
 ) extends AssetDTO
 

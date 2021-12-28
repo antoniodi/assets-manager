@@ -2,8 +2,7 @@ package co.com.infrastructure.acl.formats
 
 import akka.Done
 import co.com.domain.model.entities.User
-import co.com.infrastructure.acl.dtos._
-import co.com.infrastructure.acl.http.HTTPError
+import co.com.infrastructure.acl.dtos.{ HTTPError, _ }
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
@@ -20,14 +19,14 @@ object Formats {
   implicit val postDTOReads: Format[PostDTO] = Json.format[PostDTO]
   implicit val bankDTOWrite: Writes[BankDTO] = Json.writes[BankDTO]
 
-  implicit val currencyAmountDTOReads: Reads[CurrencyAmountDTO] = {
+  implicit val currencyAmountDTOReads: Reads[CurrencyAmountDto] = {
     (
       ( JsPath \ "currency" ).read[String] and
       ( JsPath \ "amount" ).read[Double]( min( 0d ) )
-    )( CurrencyAmountDTO.apply _ )
+    )( CurrencyAmountDto.apply _ )
   }
 
-  implicit val currencyAmountDTOWrite: Writes[CurrencyAmountDTO] = Json.writes[CurrencyAmountDTO]
+  implicit val currencyAmountDTOWrite: Writes[CurrencyAmountDto] = Json.writes[CurrencyAmountDto]
   implicit val transactionWrite: Writes[TransactionDTO] = Json.writes[TransactionDTO]
 
   object AssetFormat {
@@ -36,9 +35,9 @@ object Formats {
       case realEstate: RealEstateDTO => Json.writes[RealEstateDTO].writes( realEstate )
     }
 
-    implicit val assetReads: Reads[CreateAssetDTO] = ( json: JsValue ) => {
+    implicit val assetReads: Reads[AssetRequestDto] = ( json: JsValue ) => {
       ( json \ "assetType" ).asOpt[String] match {
-        case Some( "RealEstate" ) => json.validate[CreateRealEstateDTO]( Json.reads[CreateRealEstateDTO] )
+        case Some( "RealEstate" ) => json.validate[RealEstateRequestDto]( Json.reads[RealEstateRequestDto] )
         case Some( assetType )    => JsError( s"The assetType: [$assetType] is not supported yet." )
         case None                 => JsError( JsonValidationError( s"Invalid Json: [assetType] path is missing." ) )
       }
@@ -57,6 +56,10 @@ object Formats {
     //      }
     //    }
 
+  }
+
+  object TransactionFormat {
+    implicit val expenseFormat: Reads[ExpenseRequestDto] = Json.reads[ExpenseRequestDto]
   }
 
 }

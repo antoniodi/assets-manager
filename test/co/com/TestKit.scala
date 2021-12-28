@@ -1,15 +1,15 @@
 package co.com
 
 import co.com.application.ports.persistance.UserRepositoryBase
-import co.com.application.services.{PersistenceUserService, ServiceHelper}
+import co.com.application.services.{ PersistenceUserService, ServiceHelper }
 import co.com.domain.services.UserService
-import co.com.infrastructure.controllers.commands.Dependency
+import co.com.infrastructure.config.Dependency
 import co.com.infrastructure.persistence.repositories.configFileTest
 import co.com.infrastructure.services.RequestPostService
 import com.google.inject.Injector
 import monix.execution.ExecutionModel.AlwaysAsyncExecution
 import monix.execution.schedulers.ExecutorScheduler
-import monix.execution.{Features, UncaughtExceptionReporter}
+import monix.execution.{ Features, UncaughtExceptionReporter }
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
@@ -18,12 +18,12 @@ import org.scalatest.wordspec.AnyWordSpec
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.WSClient
-import play.api.{Application, Configuration, Environment}
+import play.api.{ Application, Configuration, Environment }
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 
-import java.util.concurrent.{Executors, SynchronousQueue, ThreadPoolExecutor, TimeUnit}
-import javax.inject.{Inject, Singleton}
+import java.util.concurrent.{ Executors, SynchronousQueue, ThreadPoolExecutor, TimeUnit }
+import javax.inject.{ Inject, Singleton }
 import scala.concurrent.ExecutionContext
 
 trait TestKitBase extends ScalaFutures with Matchers with EitherValues with MockFactory

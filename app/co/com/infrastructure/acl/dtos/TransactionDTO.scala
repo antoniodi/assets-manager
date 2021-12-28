@@ -5,5 +5,5 @@ import java.time.LocalDateTime
 case class TransactionDTO(
     id: String,
     date: LocalDateTime,
-    currencyAmount: CurrencyAmountDTO,
+    currencyAmount: CurrencyAmountDto,
     description: String )

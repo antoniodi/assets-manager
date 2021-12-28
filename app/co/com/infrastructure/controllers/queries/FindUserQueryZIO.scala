@@ -2,7 +2,7 @@ package co.com.infrastructure.controllers.queries
 
 import co.com.infrastructure.acl.formats.Formats._
 import co.com.infrastructure.acl.http.ErrorHandler.handleHttpError
-import co.com.infrastructure.controllers.commands.Dependency
+import co.com.infrastructure.config.Dependency
 import co.com.libs.akka.interop.zio.AkkaHttpEnhancement._
 import org.slf4j
 import play.api.Logger

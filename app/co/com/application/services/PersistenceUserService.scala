@@ -2,7 +2,7 @@ package co.com.application.services
 
 import akka.Done
 import co.com.infrastructure.acl.dtos.UserDTO
-import co.com.infrastructure.controllers.commands.Dependency
+import co.com.infrastructure.config.Dependency
 import co.com.libs.error.AppError
 import zio.ZIO
 

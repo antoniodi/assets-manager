@@ -1,6 +1,6 @@
 package co.com.infrastructure.controllers.queries
 
-import co.com.infrastructure.controllers.commands.Dependency
+import co.com.infrastructure.config.Dependency
 import monix.execution.schedulers.ExecutorScheduler
 import play.api.mvc.{ Action, AnyContent, MessagesAbstractController, MessagesControllerComponents }
 

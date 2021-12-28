@@ -1,10 +1,13 @@
 package co.com.domain.model.entities
 
+import squants.market.Money
+
 trait Liability {
   def id: String
   def description: String
-  def totalDebt: CurrencyAmount
-  def pendingDebt: CurrencyAmount
+  def totalDebt: Money
+  def pendingDebt: Money
+  //  def state: String
 }
 
 //case class Mortgage(id: String, ) extends Liability

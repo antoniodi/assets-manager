@@ -3,13 +3,14 @@ package co.com.infrastructure.controllers.commands
 import co.com.infrastructure.acl.dtos.UserDTO
 import co.com.infrastructure.acl.formats.Formats.{ doneWrite, userDTOReads }
 import co.com.infrastructure.acl.http.ErrorHandler.handleHttpError
+import co.com.infrastructure.config.Dependency
 import co.com.libs.command.core.{ Command, CommandHelper }
 import play.api.http.ContentTypes
 import play.api.libs.json.{ JsPath, Json, Reads }
 import play.api.mvc.{ Result, Results }
 import zio.{ URIO, ZIO }
 
-case class CreateUserZioCommand( userDTO: UserDTO ) extends Command[Dependency] with Results with ContentTypes {
+case class SaveUserZioCommand( userDTO: UserDTO ) extends Command[Dependency] with Results with ContentTypes {
 
   def execute: URIO[Dependency, Result] = {
     ZIO.accessZIO[Dependency]( _.savePersistenceUserService.saveUser( userDTO ) )
@@ -24,5 +25,5 @@ case class CreateUserZioCommand( userDTO: UserDTO ) extends Command[Dependency] 
 class CreateUserZioCommandHelper extends CommandHelper[Dependency] {
   def name: String = "create-user"
 
-  def commandReads: Reads[Command[Dependency]] = JsPath.read[UserDTO].map( CreateUserZioCommand.apply )
+  def commandReads: Reads[Command[Dependency]] = JsPath.read[UserDTO].map( SaveUserZioCommand.apply )
 }

@@ -1,7 +1,7 @@
 package co.com.libs.command.core
 
 import co.com.libs.akka.interop.zio.AkkaHttpEnhancement._
-import play.api.libs.json.{ JsError, JsSuccess, JsValue }
+import play.api.libs.json.JsValue
 import play.api.mvc._
 import zio.UIO
 
