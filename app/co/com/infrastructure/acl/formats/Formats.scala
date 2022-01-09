@@ -1,11 +1,12 @@
 package co.com.infrastructure.acl.formats
 
 import akka.Done
-import co.com.domain.model.entities.User
+import co.com.domain.model.entities.{ Expense, User }
 import co.com.infrastructure.acl.dtos.{ HTTPError, _ }
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
+import squants.market.Money
 
 object Formats {
 
@@ -29,6 +30,13 @@ object Formats {
   implicit val currencyAmountDTOWrite: Writes[CurrencyAmountDto] = Json.writes[CurrencyAmountDto]
   implicit val transactionWrite: Writes[TransactionDTO] = Json.writes[TransactionDTO]
 
+  implicit val moneyWrites: Writes[Money] = ( money: Money ) => {
+    Json.obj(
+      "currency" -> money.currency.code,
+      "amount" -> money.amount
+    )
+  }
+
   object AssetFormat {
 
     implicit val assetWrites: Writes[AssetDTO] = {
@@ -42,24 +50,29 @@ object Formats {
         case None                 => JsError( JsonValidationError( s"Invalid Json: [assetType] path is missing." ) )
       }
     }
-
-    //    implicit val assetFormat: Format[AssetDTO] = new Format[AssetDTO] {
-    //      def reads(json: JsValue): JsResult[AssetDTO] = {
-    //        (json \ "assetType").as[String] match {
-    //          case "RealEstate" => json.validate[RealEstateDTO]
-    //          case _ =>
-    //        }
-    //      }
-    //
-    //      def writes(o: AssetDTO): JsValue = {
-    //        case realEstate: RealEstateDTO => Json.writes[RealEstateDTO].writes(realEstate)
-    //      }
-    //    }
-
   }
 
   object TransactionFormat {
     implicit val expenseFormat: Reads[ExpenseRequestDto] = Json.reads[ExpenseRequestDto]
+
+    implicit def writesExpenses: Writes[List[Expense]] = Writes[List[Expense]] {
+      expenses =>
+        Json.obj(
+          "expenses" -> expenses.map { expense =>
+            Json.obj(
+              "id" -> expense.id,
+              "date" -> expense.date,
+              "category" ->
+                Json.obj(
+                  "code" -> expense.category.code,
+                  "description" -> expense.category.description,
+                ),
+              "description" -> expense.description,
+              "value" -> expense.value
+            )
+          }
+        )
+    }
   }
 
 }

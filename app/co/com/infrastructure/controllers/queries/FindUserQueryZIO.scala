@@ -7,7 +7,7 @@ import co.com.libs.akka.interop.zio.AkkaHttpEnhancement._
 import org.slf4j
 import play.api.Logger
 import play.api.libs.json.Json
-import play.api.mvc.{ Action, AnyContent, MessagesAbstractController, MessagesControllerComponents }
+import play.api.mvc.{ Action, AnyContent, MessagesAbstractController, MessagesControllerComponents, Result }
 
 import javax.inject.Inject
 
@@ -24,9 +24,9 @@ class FindUserQueryZIO @Inject() (
       .fold( { error =>
         logger.error( s"an error was occurred: $error.toString()}." )
         handleHttpError( error )
-      }, { user =>
-        logger.info( s"user was found: ${user.toString}." )
-        Ok( Json.toJson( user ) )
+      }, { optionUser =>
+        logger.info( s"user was found: ${optionUser.toString}." )
+        optionUser.fold( NoContent )( user => Ok( Json.toJson( user ) ) )
       } )
   }
 

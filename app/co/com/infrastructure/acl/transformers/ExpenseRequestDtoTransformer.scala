@@ -1,6 +1,6 @@
 package co.com.infrastructure.acl.transformers
 
-import co.com.domain.model.entities.{ Asset, Expense, Liability, TransactionId }
+import co.com.domain.model.entities.{ Asset, Expense, Liability }
 import co.com.domain.model.types.ExpenseCategory
 import co.com.infrastructure.acl.dtos.ExpenseRequestDto
 import co.com.infrastructure.config.Dependency
@@ -9,13 +9,13 @@ import zio.ZIO
 
 trait ExpenseRequestDtoTransformer {
 
-  def toExpense( transactionId: TransactionId, dto: ExpenseRequestDto, asset: Option[Asset], liability: Option[Liability] ): ZIO[Dependency, AppError, Expense] = {
+  def toExpense( transactionId: String, dto: ExpenseRequestDto, asset: Option[Asset], liability: Option[Liability] ): ZIO[Dependency, AppError, Expense] = {
     for {
       dependency <- ZIO.environment[Dependency]
       category <- ExpenseCategory( dto.category )
-      money <- dependency.currencyAmountDtoTransformer.toMoney( dto.currencyAmount )
+      money <- dependency.currencyAmountDtoTransformer.toMoney( dto.currencyAmount.currency, dto.currencyAmount.amount )
       now = dependency.dateHelper.getNow
-    } yield Expense( transactionId, now, category, money, dto.description, asset, liability )
+    } yield Expense( transactionId, now, category, dto.description, money, asset, liability )
   }
 
 }

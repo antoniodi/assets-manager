@@ -6,8 +6,7 @@ trait Liability {
   def id: String
   def description: String
   def totalDebt: Money
-  def pendingDebt: Money
   //  def state: String
 }
 
-//case class Mortgage(id: String, ) extends Liability
+case class Mortgage( id: String, description: String, totalDebt: Money ) extends Liability
