@@ -22,15 +22,15 @@ object ExpenseRepository extends ExpenseRepositoryBase {
 
   val logger: slf4j.Logger = Logger( getClass ).logger
 
-  def save( expense: Expense, date: LocalDateTime ): ZIO[DatabaseConfig[JdbcProfile], AppError, Done] = {
-    val insert = expenses += ExpenseRow( expense.id, Timestamp.valueOf( date ), expense.category.code, expense.description, expense.value.currency.code, expense.value.amount.toDouble, expense.asset.map( _.id ), expense.liability.map( _.id ) )
-    ZIO.fromDBIO( insert )
-      .map( _ => Done )
-      .mapError( error => {
-        val errorMessage = s"An error occurred trying to save the expense: [${expense.description}]."
+  def find( id: String ): ZIO[DatabaseConfig[JdbcProfile], AppError, Option[Expense]] = {
+    val query = expenses.filter( _.id === id )
+    ZIO.fromDBIO( query.result )
+      .refineOrDie( error => {
+        val errorMessage = s"An error occurred trying to find the expenses."
         logger.error( errorMessage, error )
         DataBaseError( errorMessage )
       } )
+      .flatMap( expenses => ZIO.sequence( expenses.headOption.map( toExpense ) ) )
   }
 
   def findAll: ZIO[DatabaseConfig[JdbcProfile], AppError, List[Expense]] = {
@@ -41,5 +41,16 @@ object ExpenseRepository extends ExpenseRepositoryBase {
         DataBaseError( errorMessage )
       } )
       .flatMap( expenses => ZIO.sequence( expenses.map( toExpense ).toList ) )
+  }
+
+  def save( expense: Expense, date: LocalDateTime ): ZIO[DatabaseConfig[JdbcProfile], AppError, Done] = {
+    val insert = expenses += ExpenseRow( expense.id, Timestamp.valueOf( date ), expense.category.code, expense.description, expense.value.currency.code, expense.value.amount.toDouble, expense.asset.map( _.id ), expense.liability.map( _.id ) )
+    ZIO.fromDBIO( insert )
+      .map( _ => Done )
+      .mapError( error => {
+        val errorMessage = s"An error occurred trying to save the expense: [${expense.description}]."
+        logger.error( errorMessage, error )
+        DataBaseError( errorMessage )
+      } )
   }
 }

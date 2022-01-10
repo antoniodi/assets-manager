@@ -6,6 +6,7 @@
 POST    /command/:command            co.com.infrastructure.config.CommandController.executeCommand( command: String )
 GET     /user-zio/:username          co.com.infrastructure.controllers.queries.FindUserQueryZIO.findUser( username: String )
 GET     /users                       co.com.infrastructure.controllers.queries.FindUsersQuery.find()
-GET     /expenses                    co.com.infrastructure.controllers.queries.FindExpenseQuery.findAll()
+GET     /expenses                    co.com.infrastructure.controllers.queries.FindExpensesQuery.findAll()
+GET     /expenses/:id                co.com.infrastructure.controllers.queries.FindExpenseQuery.find( id: String )
 #GET    /posts                       co.com.infrastructure.controllers.queries.RequestPosts.request
 GET     /version                     co.com.infrastructure.controllers.queries.VersionQuery.version

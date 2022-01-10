@@ -1,4 +1,4 @@
-package co.com.simulations
+package simulations
 
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
@@ -30,9 +30,10 @@ class SaveExpenseSimulation extends Simulation {
       http("request_1")
         .post("/command/save-expense")
         .body( StringBody( body ) )
+        .check( status.is(201 ) )
     ).pause(1)
 
   setUp(
-    scn.inject( rampUsers(1000 ) during (10 seconds) )
+    scn.inject( rampUsers(1 ) during (1 seconds) )
   ).protocols(httpProtocol)
 }

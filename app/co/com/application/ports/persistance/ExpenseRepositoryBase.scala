@@ -11,6 +11,8 @@ import java.time.LocalDateTime
 
 trait ExpenseRepositoryBase {
 
+  def find( id: String ): ZIO[DatabaseConfig[JdbcProfile], AppError, Option[Expense]]
+
   def findAll: ZIO[DatabaseConfig[JdbcProfile], AppError, List[Expense]]
 
   def save( expense: Expense, date: LocalDateTime ): ZIO[DatabaseConfig[JdbcProfile], AppError, Done]

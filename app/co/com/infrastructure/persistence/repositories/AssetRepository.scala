@@ -4,7 +4,6 @@ import co.com.application.ports.persistance.AssetRepositoryBase
 import co.com.domain.model.entities.{ Asset, LoanToThirdParty }
 import co.com.infrastructure.persistence.repositories.LiabilityRepository.logger
 import co.com.infrastructure.persistence.tables.asset
-import co.com.infrastructure.persistence.transformers.LiabilityTransformer.toLiability
 import co.com.libs.error.{ AppError, DataBaseError }
 import co.com.libs.slick.interop.zio.SlickEnhancement._
 import slick.basic.DatabaseConfig

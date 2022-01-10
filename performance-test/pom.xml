@@ -65,7 +65,7 @@
           <runMultipleSimulations>true</runMultipleSimulations>
           <simulationsFolder>src/test/scala</simulationsFolder>
           <includes>
-            <param>co.com.simulations.*</param>
+            <param>simulations.*</param>
           </includes>
         </configuration>
       </plugin>
