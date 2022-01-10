@@ -41,7 +41,7 @@ object ExpenseCategory {
 
 object BusinessExpense extends ExpenseCategory {
   def code: String = "BUSINESS_EXPENSE"
-  def description: String = "BusinessExpense"
+  def description: String = "Business expense"
 }
 
 object Food extends ExpenseCategory {
@@ -51,12 +51,12 @@ object Food extends ExpenseCategory {
 
 object Entertainment extends ExpenseCategory {
   def code: String = "ENTERTAINMENT"
-  def description: String = "EntertainmentFood"
+  def description: String = "Entertainment"
 }
 
 object SelfImprovement extends ExpenseCategory {
   def code: String = "SELF_IMPROVEMENT"
-  def description: String = "SelfImprovement"
+  def description: String = "Self improvement"
 }
 
 object Travel extends ExpenseCategory {
