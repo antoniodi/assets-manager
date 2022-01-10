@@ -13,7 +13,7 @@ trait ExpenseRequestDtoTransformer {
     for {
       dependency <- ZIO.environment[Dependency]
       category <- ExpenseCategory( dto.category )
-      money <- dependency.currencyAmountDtoTransformer.toMoney( dto.currencyAmount.currency, dto.currencyAmount.amount )
+      money <- dependency.currencyAmountDtoTransformer.toMoney( dto.value.currency, dto.value.amount )
       now = dependency.dateHelper.getNow
     } yield Expense( transactionId, now, category, dto.description, money, asset, liability )
   }

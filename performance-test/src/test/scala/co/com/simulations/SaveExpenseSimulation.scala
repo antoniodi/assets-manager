@@ -17,9 +17,9 @@ class SaveExpenseSimulation extends Simulation {
   val body: String =
     """
       |{
-      |    "category": "RealEstate",
-      |    "currencyAmount": {
-      |        "currency": "String",
+      |    "category": "ENTERTAINMENT",
+      |    "value": {
+      |        "currency": "COP",
       |        "amount": 123
       |    },
       |    "description": "description"
@@ -33,6 +33,6 @@ class SaveExpenseSimulation extends Simulation {
     ).pause(1)
 
   setUp(
-    scn.inject( rampUsers(1 ) during (1 seconds) )
+    scn.inject( rampUsers(1000 ) during (10 seconds) )
   ).protocols(httpProtocol)
 }
