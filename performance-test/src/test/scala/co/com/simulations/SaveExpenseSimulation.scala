@@ -25,7 +25,7 @@ class SaveExpenseSimulation extends Simulation {
       |    "description": "description"
       |}""".stripMargin
 
-  val scn: ScenarioBuilder = scenario("BasicSimulation") // 7
+  val scn: ScenarioBuilder = scenario("Save expense")
     .exec(
       http("request_1")
         .post("/command/save-expense")
