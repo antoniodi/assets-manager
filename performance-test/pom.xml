@@ -2,13 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>com.gatlingtest</groupId>
   <artifactId>performance-test</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <packaging>jar</packaging>
+
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
     <encoding>UTF-8</encoding>
 
     <gatling.version>3.7.3</gatling.version>
@@ -34,7 +38,21 @@
   </dependencies>
 
   <build>
+    <finalName>${project.artifactId}</finalName>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+      <testResource>
+        <directory>src/test/scala</directory>
+        <excludes>
+          <exclude>**/*.scala</exclude>
+        </excludes>
+      </testResource>
+    </testResources>
+
     <plugins>
+      <!-- Plugin to compile scala code -->
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
@@ -57,6 +75,7 @@
         </executions>
       </plugin>
 
+      <!-- Gatling plugin to execute tests -->
       <plugin>
         <groupId>io.gatling</groupId>
         <artifactId>gatling-maven-plugin</artifactId>
@@ -68,6 +87,33 @@
             <param>simulations.*</param>
           </includes>
         </configuration>
+      </plugin>
+
+      <!-- Gatling plugin to execute tests -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven-assembly-plugin.version}</version>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>io.gatling.app.Gatling</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
