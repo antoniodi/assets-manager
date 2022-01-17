@@ -108,7 +108,7 @@
             <configuration>
               <archive>
                 <manifest>
-                  <mainClass>io.gatling.app.Gatling</mainClass>
+                  <mainClass>Main</mainClass>
                 </manifest>
               </archive>
             </configuration>
