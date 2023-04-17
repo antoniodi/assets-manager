@@ -11,7 +11,7 @@ import scala.language.postfixOps
 class SaveExpenseSimulation extends Simulation {
 
   val httpProtocol: HttpProtocolBuilder = http
-    .baseUrl("http://localhost:9003/ms-base")
+    .baseUrl("http://localhost:9000/ms-base")
     .contentTypeHeader( "application/json" )
 
   val body: String =
@@ -34,6 +34,6 @@ class SaveExpenseSimulation extends Simulation {
     ).pause(1)
 
   setUp(
-    scn.inject( rampUsers(1 ) during (1 seconds) )
+    scn.inject( rampUsers(1) during (1 seconds) )
   ).protocols(httpProtocol)
 }

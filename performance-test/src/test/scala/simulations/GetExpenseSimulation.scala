@@ -11,7 +11,7 @@ import scala.language.postfixOps
 class GetExpenseSimulation extends Simulation {
 
   val httpProtocol: HttpProtocolBuilder = http
-    .baseUrl("http://localhost:9003/ms-base")
+    .baseUrl("http://localhost:9000/ms-base")
     .contentTypeHeader( "application/json" )
 
   val scn: ScenarioBuilder = scenario("Find expense")
